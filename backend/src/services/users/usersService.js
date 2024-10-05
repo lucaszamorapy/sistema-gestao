@@ -7,7 +7,7 @@ export const register = async (name, last_name, email, icon, password) => {
   try {
     const findExistUser = await Users.findOne({ where: { email } });
     if (findExistUser) {
-      return new ResponseModel(null, "E-mail já registrado.");
+      throw new Error("E-mail já cadastrado.");
     }
 
     const saltRounds = 10;
@@ -32,11 +32,11 @@ export const login = async (email, password) => {
     const findExistUser = await Users.findOne({ where: { email } });
 
     if (!findExistUser) {
-      return new ResponseModel(null, "Usuário não encontrado.");
+      throw new Error("Usuário não encontrado.");
     }
     const isMatch = await bcrypt.compare(password, findExistUser.password);
     if (!isMatch) {
-      return new ResponseModel(null, "Senha ou usuário inválidos.");
+      throw new Error("Senha ou usuário inválidos.");
     }
     const token = jwt.sign(
       {
@@ -53,16 +53,27 @@ export const login = async (email, password) => {
   }
 };
 
-export const userInfo = async (email) => {
+export const userInfo = async (token) => {
   try {
-    const findExistUser = await Users.findOne({ where: { email } });
+    const decoded = jwt.verify(token, "YOUR_SECRET_KEY");
+    console.log(decoded);
+    const findExistUser = await Users.findByPk(decoded.user_id); //user_id é a decodificação do obj do token (user_id e email)
 
     if (!findExistUser) {
-      return new ResponseModel(null, "Usuário não encontrado.");
+      throw new Error("Usuário não encontrado.");
     }
-    return new ResponseModel(findExistUser, "Usuário encontrado com sucesso!");
-  } catch (error) {
-    console.error("User info error:", error);
-    throw new Error(error.message);
+
+    return new ResponseModel(
+      {
+        user_id: findExistUser.user_id,
+        name: findExistUser.name,
+        last_name: findExistUser.last_name,
+        email: findExistUser.email,
+        icon: findExistUser.icon,
+      },
+      `Busca do usuário ${findExistUser.name} realizado com sucesso`
+    );
+  } catch (err) {
+    throw new Error(err.message);
   }
 };

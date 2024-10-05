@@ -14,24 +14,18 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Toaster } from "../ui/toaster";
-import { useToast } from "@/hooks/use-toast";
-import { register } from "../../composables/user";
-import { Label } from "../ui/label";
-import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { Link } from "react-router-dom";
 
-interface RegisterData {
-  name: string;
-  lastname: string;
+interface LoginData {
   email: string;
   password: string;
 }
 
-const RegisterForm = () => {
+const LoginForm = () => {
   const [loading, setLoading] = useState(false);
-  const [file, setFile] = useState<File | null>(null);
   const [showPassword, setShowPassword] = useState(false);
-  const { toast } = useToast();
-  const navigate = useNavigate();
+  const { loginUser } = useAuth();
 
   const formSchema = z.object({
     email: z
@@ -45,8 +39,6 @@ const RegisterForm = () => {
     password: z
       .string()
       .min(6, { message: "A senha deve ter pelo menos 6 caracteres." }),
-    name: z.string().min(1, { message: "Nome é obrigatório." }),
-    lastname: z.string().min(1, { message: "Sobrenome é obrigatório." }),
   });
 
   const form = useForm({
@@ -54,9 +46,6 @@ const RegisterForm = () => {
     defaultValues: {
       email: "",
       password: "",
-      name: "",
-      lastname: "",
-      icon: null,
     },
   });
 
@@ -64,52 +53,20 @@ const RegisterForm = () => {
     setShowPassword(!showPassword);
   };
 
-  const onSubmit = async (data: RegisterData) => {
+  const onSubmit = async (data: LoginData) => {
     setLoading(true);
     try {
-      const allowedExtensions = [".jpg", ".jpeg", ".png"];
-      let fileExtension = "";
-
-      const formData = new FormData();
-      formData.append("name", data.name);
-      formData.append("last_name", data.lastname);
-      formData.append("email", data.email);
-      formData.append("password", data.password);
-
-      if (file) {
-        fileExtension = file.name.split(".").pop()?.toLowerCase() || "";
-        if (!allowedExtensions.includes(`.${fileExtension}`)) {
-          toast({
-            variant: "destructive",
-            title: "Tipo de arquivo não permitido.",
-            description: "Permitido apenas arquivos .jpg, .jpeg, ou .png",
-          });
-          setLoading(false);
-          return;
-        }
-
-        formData.append("icon", file);
-      }
-
-      await register(formData);
+      await loginUser(data.email, data.password);
     } catch (error) {
-      console.error("Erro interno: ", error);
+      console.log("Erro interno: ", error);
       setLoading(false);
     } finally {
-      setTimeout(() => {
-        navigate("/login");
-      }, 3000);
       setLoading(false);
     }
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = event.target.files ? event.target.files[0] : null;
-    setFile(selectedFile);
-  };
-
   return (
-    <section className="mt-32">
+    <section className="mt-56">
       <div className="container">
         <Toaster />
         <div className="flex flex-col items-center justify-center ">
@@ -121,44 +78,9 @@ const RegisterForm = () => {
               <div className="flex flex-col">
                 <h1 className="font-semibold text-xl">Seja bem-vindo!</h1>
                 <p className="text-gray-400">
-                  você não esta conectado, precisa fazer o registro para
-                  continuar
+                  você não esta conectado, precisa fazer o login para continuar
                 </p>
               </div>
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nome</FormLabel>
-                    <FormControl>
-                      <Input
-                        className="w-full"
-                        placeholder="Digite seu nome"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="lastname"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Sobrenome</FormLabel>
-                    <FormControl>
-                      <Input
-                        className="w-full"
-                        placeholder="Digite seu sobrenome"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
               <FormField
                 control={form.control}
                 name="email"
@@ -176,17 +98,6 @@ const RegisterForm = () => {
                   </FormItem>
                 )}
               />
-              <div className="grid w-full items-center gap-1.5">
-                <Label htmlFor="icon">Ícone</Label>
-                <Input
-                  id="icon"
-                  type="file"
-                  accept="image/*"
-                  className="w-full"
-                  onChange={handleFileChange}
-                />
-              </div>
-
               <FormField
                 control={form.control}
                 name="password"
@@ -223,16 +134,16 @@ const RegisterForm = () => {
               {loading ? (
                 <Button disabled>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Cadastrando
+                  Entrando
                 </Button>
               ) : (
-                <Button type="submit">Enviar</Button>
+                <Button type="submit">Entrar</Button>
               )}
               <div className="flex flex-col">
                 <p className="text-sm">
-                  Lembrou da sua conta?{" "}
-                  <Link className="text-primary" to={"/login"}>
-                    Entre agora
+                  Ainda não possui uma conta?{" "}
+                  <Link className="text-primary" to={"/cadastro"}>
+                    Cadastre-se agora
                   </Link>
                 </p>
               </div>
@@ -244,4 +155,4 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+export default LoginForm;

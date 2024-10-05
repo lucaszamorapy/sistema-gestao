@@ -12,6 +12,6 @@ const router = express.Router();
 
 router.post("/user/register", uploadUsers.single("icon"), registerController);
 router.post("/user/login", loginController);
-router.post("/user/info", userInfoController);
+router.get("/user/info", userInfoController);
 
 export default router;

@@ -27,9 +27,12 @@ export const loginController = async (req, res) => {
 };
 
 export const userInfoController = async (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) {
+    return res.status(401).json({ error: "No token provided" });
+  }
   try {
-    const { email } = req.body;
-    const info = await userInfo(email);
+    const info = await userInfo(token);
     return res.status(200).json(info);
   } catch (error) {
     return res.status(400).json({ error: error.message });
