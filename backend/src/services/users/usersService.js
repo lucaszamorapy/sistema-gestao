@@ -22,6 +22,7 @@ export const register = async (name, last_name, email, icon, password) => {
 
     return new ResponseModel(userCreated, "Usuário registrado com sucesso!");
   } catch (error) {
+    console.error("Register error:", error);
     throw new Error(error.message);
   }
 };
@@ -45,9 +46,23 @@ export const login = async (email, password) => {
       "YOUR_SECRET_KEY",
       { expiresIn: "1h" }
     );
-    return new ResponseModel(token, `Bem-vindo usuário ${findExistUser.name}`);
+    return new ResponseModel(token, `Bem-vindo usuário ${findExistUser.name}!`);
   } catch (error) {
     console.error("Login error:", error);
+    throw new Error(error.message);
+  }
+};
+
+export const userInfo = async (email) => {
+  try {
+    const findExistUser = await Users.findOne({ where: { email } });
+
+    if (!findExistUser) {
+      return new ResponseModel(null, "Usuário não encontrado.");
+    }
+    return new ResponseModel(findExistUser, "Usuário encontrado com sucesso!");
+  } catch (error) {
+    console.error("User info error:", error);
     throw new Error(error.message);
   }
 };
