@@ -1,8 +1,8 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../../config/db");
 
-const Products = sequelize.define(
-  "Products",
+const Viewproducts = sequelize.define(
+  "Viewproducts",
   {
     product_id: {
       type: DataTypes.INTEGER,
@@ -10,13 +10,11 @@ const Products = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    type_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    name: {
+    type_name: {
       type: DataTypes.STRING,
-      allowNull: false,
+    },
+    product_name: {
+      type: DataTypes.STRING,
     },
     description: {
       type: DataTypes.STRING,
@@ -36,9 +34,9 @@ const Products = sequelize.define(
     },
   },
   {
-    tableName: "products",
+    tableName: "Viewproducts",
     timestamps: false,
   }
 );
 
-module.exports = Products;
+module.exports = Viewproducts;

@@ -1,9 +1,9 @@
-import Users from "../../models/users/usersModel.js";
-import bcrypt from "bcrypt";
-import ResponseModel from "../../models/response/responseModel.js";
-import jwt from "jsonwebtoken";
+const Users = require("../../models/users/usersModel.js");
+const bcrypt = require("bcrypt");
+const ResponseModel = require("../../models/response/responseModel.js");
+const jwt = require("jsonwebtoken");
 
-export const register = async (name, last_name, email, icon, password) => {
+const register = async (name, last_name, email, icon, password) => {
   try {
     const findExistUser = await Users.findOne({ where: { email } });
     if (findExistUser) {
@@ -27,7 +27,7 @@ export const register = async (name, last_name, email, icon, password) => {
   }
 };
 
-export const login = async (email, password) => {
+const login = async (email, password) => {
   try {
     const findExistUser = await Users.findOne({ where: { email } });
 
@@ -53,7 +53,7 @@ export const login = async (email, password) => {
   }
 };
 
-export const userInfo = async (token) => {
+const userInfo = async (token) => {
   try {
     const decoded = jwt.verify(token, "YOUR_SECRET_KEY");
     console.log(decoded);
@@ -76,4 +76,10 @@ export const userInfo = async (token) => {
   } catch (err) {
     throw new Error(err.message);
   }
+};
+
+module.exports = {
+  register,
+  login,
+  userInfo,
 };

@@ -1,6 +1,9 @@
-import Products from "./products/productsModel.js";
-import Types from "./types/typesModel.js";
+const Products = require("./products/productsModel.js");
+const Types = require("./types/typesModel.js");
 
 Products.belongsTo(Types, { foreignKey: "type_id" });
 
-export default { Products, Types };
+module.exports = {
+  Products,
+  Types,
+};

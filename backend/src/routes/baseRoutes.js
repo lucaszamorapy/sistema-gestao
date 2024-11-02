@@ -1,17 +1,19 @@
-import express from "express";
-import { createMulterConfig } from "../middlewares/uploadImages.js";
-import {
-  loginController,
-  registerController,
-  userInfoController,
-} from "../controllers/users/usersControllers.js";
+const express = require("express");
+const createMulterConfig = require("../middlewares/uploadImages.js");
+const usersController = require("../controllers/users/usersControllers.js");
+const productsController = require("../controllers/products/productsControllers.js");
 
 const uploadUsers = createMulterConfig();
 const uploadProducts = createMulterConfig(true);
 const router = express.Router();
 
-router.post("/user/register", uploadUsers.single("icon"), registerController);
-router.post("/user/login", loginController);
-router.get("/user/info", userInfoController);
+router.post(
+  "/user/register",
+  uploadUsers.single("icon"),
+  usersController.registerController
+);
+router.post("/user/login", usersController.loginController);
+router.get("/user/info", usersController.userInfoController);
+router.get("/products", productsController.getAllProductsController);
 
-export default router;
+module.exports = router;

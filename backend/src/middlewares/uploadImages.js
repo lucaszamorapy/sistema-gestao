@@ -1,13 +1,13 @@
-import multer from "multer";
-import path from "path";
+const multer = require("multer");
+const path = require("path");
 
-export const createMulterConfig = (isProductUpload = false) => {
+const createMulterConfig = (isProductUpload = false) => {
   return multer({
     storage: multer.diskStorage({
       destination: (req, file, cb) => {
         const uploadPath = isProductUpload
-          ? "./src/assets/upload/products"
-          : "./src/assets/upload/users";
+          ? "./assets/upload/products"
+          : "./assets/upload/users";
         cb(null, uploadPath);
       },
       filename: (req, file, cb) => {
@@ -28,3 +28,5 @@ export const createMulterConfig = (isProductUpload = false) => {
     }),
   });
 };
+
+module.exports = createMulterConfig;

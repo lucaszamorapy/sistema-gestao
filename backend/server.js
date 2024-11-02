@@ -1,19 +1,17 @@
-import express from "express";
-import cors from "cors";
-import baseRoutes from "./src/routes/baseRoutes.js";
-import path from "path";
+const express = require("express");
+const cors = require("cors");
+const baseRoutes = require("./src/routes/baseRoutes");
+const sequelize = require("./src/config/db");
+const path = require("path");
 
 const app = express();
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
-const assets = "./src/assets";
-
 app.use(cors());
 app.use(express.json());
-
 app.use("/api", baseRoutes);
 
-app.use("/assets", express.static(path.join(__dirname, assets)));
+app.use("/assets", express.static(path.join(__dirname, "assets")));
+console.log(path.join(__dirname, "assets"));
 
 app.listen(8082, () => {
-  console.log("Servidor rodando na porta 82");
+  console.log("Servidor rodando na porta 8082");
 });

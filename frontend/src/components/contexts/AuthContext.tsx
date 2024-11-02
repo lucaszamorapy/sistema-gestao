@@ -35,10 +35,10 @@ export const AuthProvider = ({ children }: IChildren) => {
   useEffect(() => {
     const checkAuthToken = async () => {
       const token = localStorage.getItem("authToken");
+      setLoading(true);
       if (token) {
         try {
           const userInfo = await getUserInfo(token);
-          console.log(userInfo);
           setUserInfo(userInfo.result);
           setIsAuthenticated(true);
         } catch (error) {
@@ -73,7 +73,7 @@ export const AuthProvider = ({ children }: IChildren) => {
 
   const logoutUser = () => {
     localStorage.removeItem("authToken");
-    localStorage.removeItem("welcomeMessageShown");
+    localStorage.removeItem("welcomeMessageShow");
     setIsAuthenticated(false);
     setUserInfo(undefined);
     navigate("/login");
