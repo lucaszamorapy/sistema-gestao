@@ -4,14 +4,16 @@ import { useNavigate } from "react-router-dom";
 
 interface UserInfoProps {
   user_id: number | null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   name: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   last_name: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   email: any;
   icon: File | null | undefined;
 }
 
 interface AuthContextProps {
-  isAuthenticated: boolean;
   userInfo: UserInfoProps | undefined;
   loginUser: (email: string, password: string) => Promise<void>;
   logoutUser: () => void;
@@ -25,9 +27,6 @@ interface IChildren {
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: IChildren) => {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
-    !!localStorage.getItem("authToken")
-  );
   const [userInfo, setUserInfo] = useState<UserInfoProps>();
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -40,14 +39,11 @@ export const AuthProvider = ({ children }: IChildren) => {
         try {
           const userInfo = await getUserInfo(token);
           setUserInfo(userInfo.result);
-          setIsAuthenticated(true);
         } catch (error) {
           console.error(error);
-          setIsAuthenticated(false);
           setUserInfo(undefined);
         }
       } else {
-        setIsAuthenticated(false);
         setUserInfo(undefined);
       }
       setLoading(false);
@@ -63,8 +59,7 @@ export const AuthProvider = ({ children }: IChildren) => {
         password,
       });
       localStorage.setItem("authToken", newLogin.result);
-      setIsAuthenticated(true);
-      navigate("/home");
+      navigate("/");
     } catch (error) {
       console.error("Login failed:", error);
       throw error;
@@ -74,7 +69,6 @@ export const AuthProvider = ({ children }: IChildren) => {
   const logoutUser = () => {
     localStorage.removeItem("authToken");
     localStorage.removeItem("welcomeMessageShow");
-    setIsAuthenticated(false);
     setUserInfo(undefined);
     navigate("/login");
   };
@@ -82,7 +76,6 @@ export const AuthProvider = ({ children }: IChildren) => {
   return (
     <AuthContext.Provider
       value={{
-        isAuthenticated,
         loginUser,
         logoutUser,
         userInfo,

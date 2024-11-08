@@ -13,7 +13,7 @@ const App = () => {
         <Routes>
           <Route path="/cadastro" element={<Register />} />
           <Route
-            path="/home"
+            path="/"
             element={
               <SidebarProvider>
                 <SidebarHeader />

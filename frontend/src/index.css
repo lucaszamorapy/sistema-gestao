@@ -76,10 +76,6 @@
   }
 }
 
-body {
-  background-color: #fff;
-}
-
 @layer base {
   * {
     @apply border-border;

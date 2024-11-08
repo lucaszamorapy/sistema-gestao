@@ -35,6 +35,7 @@ const items = [
 
 const SidebarHeader = () => {
   const { userInfo, logoutUser } = useAuth();
+
   return (
     <>
       <Sidebar collapsible="icon">

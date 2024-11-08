@@ -72,7 +72,7 @@ const LoginForm = () => {
         <div className="flex flex-col items-center justify-center ">
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(onSubmit)}
+              onSubmit={form.handleSubmit(onSubmit)} //form.handleSubmit ja passa o data da função onSubmit
               className="space-y-4 border-2 p-10 rounded-md "
             >
               <div className="flex flex-col">
