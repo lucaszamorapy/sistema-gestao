@@ -13,7 +13,7 @@ const registerController = async (req, res) => {
     );
     return res.status(201).json(userCreated);
   } catch (err) {
-    return res.status(400).json({ error: err.message });
+    return res.status(400).json({ error: "E-mail já cadastrado." });
   }
 };
 
@@ -21,17 +21,16 @@ const loginController = async (req, res) => {
   try {
     const { email, password } = req.body;
     const token = await usersService.login(email, password);
-
     return res.status(200).json(token);
   } catch (err) {
-    return res.status(400).json({ error: err.message });
+    return res.status(400).json({ error: "Senha ou usuário inválidos." });
   }
 };
 
 const userInfoController = async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
   if (!token) {
-    return res.status(401).json({ error: "No token provided" });
+    return res.status(401).json({ error: "Token não existe" });
   }
   try {
     const info = await usersService.userInfo(token);

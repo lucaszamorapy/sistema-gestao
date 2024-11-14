@@ -1,7 +1,7 @@
 import { API_URL } from "@/globalFunctions"
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner"
 
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 
 interface userLogin {
   email: string;
@@ -11,36 +11,30 @@ interface userLogin {
 export const register = async (formData: FormData) => {
   try {
     const response = await axios.post(`${API_URL}/user/register`, formData)
-    toast({
-      variant: "default",
-      title: `${response.data.message}`,
-    });
+    toast.success(response.data.message);
     return response.data
-  } catch (error) {
-    toast({
-      variant: "destructive",
-      title: "Ocorreu um erro durante o cadastro.",
-    });
-    console.error("Erro ao cadastrar o usuário.", error)
+  } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      const errorMessage = error.response ? error.response.data.error : 'Erro desconhecido. Tente novamente mais tarde.';
+      toast.error(errorMessage);
+      console.error("Erro ao cadastrar usuário:", error);
+    }
   }
 }
 
 export const login = async (userLogin: userLogin) => {
   try {
-    const response = await axios.post(`${API_URL}/user/login`, userLogin)
-    toast({
-      variant: "default",
-      title: `${response.data.message}`,
-    });
-    return response.data
-  } catch (error) {
-    toast({
-      variant: "destructive",
-      title: "Usuário ou senha inválidos.",
-    });
-    console.error("Erro ao logar usuário.", error)
+    const response = await axios.post(`${API_URL}/user/login`, userLogin);
+    toast.success(response.data.message);
+    return response.data;
+  } catch (error: unknown) {
+    if (error instanceof AxiosError) {
+      const errorMessage = error.response ? error.response.data.error : 'Erro desconhecido. Tente novamente mais tarde.';
+      toast.error(errorMessage);
+      console.error("Erro ao logar usuário:", error);
+    }
   }
-}
+};
 
 export const getUserInfo = async (token: string) => {
   try {

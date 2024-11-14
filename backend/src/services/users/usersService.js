@@ -22,7 +22,6 @@ const register = async (name, last_name, email, icon, password) => {
 
     return new ResponseModel(userCreated, "Usuário registrado com sucesso!");
   } catch (error) {
-    console.error("Register error:", error);
     throw new Error(error.message);
   }
 };
@@ -48,7 +47,6 @@ const login = async (email, password) => {
     );
     return new ResponseModel(token, `Bem-vindo usuário ${findExistUser.name}!`);
   } catch (error) {
-    console.error("Login error:", error);
     throw new Error(error.message);
   }
 };
@@ -56,7 +54,6 @@ const login = async (email, password) => {
 const userInfo = async (token) => {
   try {
     const decoded = jwt.verify(token, "YOUR_SECRET_KEY");
-    console.log(decoded);
     const findExistUser = await Users.findByPk(decoded.user_id); //user_id é a decodificação do obj do token (user_id e email)
 
     if (!findExistUser) {

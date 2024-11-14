@@ -5,7 +5,7 @@ const getAllProductsController = async (req, res) => {
     const response = await productsService.getAllProducts();
     return res.status(200).json(response);
   } catch (err) {
-    return res.status(400).json({ error: err.message });
+    return res.status(400).json({ error: "Nenhum produto foi encontrado" });
   }
 };
 

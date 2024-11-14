@@ -13,7 +13,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { Toaster } from "../ui/toaster";
 import { useAuth } from "../contexts/AuthContext";
 import { Link } from "react-router-dom";
 
@@ -68,7 +67,6 @@ const LoginForm = () => {
   return (
     <section className="mt-56">
       <div className="container">
-        <Toaster />
         <div className="flex flex-col items-center justify-center ">
           <Form {...form}>
             <form

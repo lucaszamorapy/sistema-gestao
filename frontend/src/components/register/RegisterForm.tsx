@@ -13,7 +13,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { Toaster } from "../ui/toaster";
 import { useToast } from "@/hooks/use-toast";
 import { register } from "../../composables/user";
 import { Label } from "../ui/label";
@@ -111,7 +110,6 @@ const RegisterForm = () => {
   return (
     <section className="mt-32">
       <div className="container">
-        <Toaster />
         <div className="flex flex-col items-center justify-center ">
           <Form {...form}>
             <form
