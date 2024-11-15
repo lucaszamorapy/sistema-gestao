@@ -12,18 +12,19 @@ const registerController = async (req, res) => {
       password
     );
     return res.status(201).json(userCreated);
-  } catch (err) {
-    return res.status(400).json({ error: "E-mail já cadastrado." });
+  } catch (error) {
+    const message = error.message.replace(/^Error:\s*/, "");
+    return res.status(400).json({ error: message });
   }
 };
 
 const loginController = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const token = await usersService.login(email, password);
+    const token = await usersService.login(req.body);
     return res.status(200).json(token);
-  } catch (err) {
-    return res.status(400).json({ error: "Senha ou usuário inválidos." });
+  } catch (error) {
+    const message = error.message.replace(/^Error:\s*/, "");
+    return res.status(400).json({ error: message });
   }
 };
 
@@ -35,8 +36,9 @@ const userInfoController = async (req, res) => {
   try {
     const info = await usersService.userInfo(token);
     return res.status(200).json(info);
-  } catch (err) {
-    return res.status(400).json({ error: err.message });
+  } catch (error) {
+    const message = error.message.replace(/^Error:\s*/, "");
+    return res.status(400).json({ error: message });
   }
 };
 

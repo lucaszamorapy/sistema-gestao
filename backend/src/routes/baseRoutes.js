@@ -15,5 +15,16 @@ router.post(
 router.post("/user/login", usersController.loginController);
 router.get("/user/info", usersController.userInfoController);
 router.get("/products", productsController.getAllProductsController);
+router.post(
+  "/products/register",
+  uploadProducts.single("image"),
+  productsController.createProductController
+);
+router.put(
+  "/products/change/:id",
+  uploadProducts.single("image"),
+  productsController.changeProductController
+);
+router.delete("/products/:id", productsController.deleteProductController);
 
 module.exports = router;

@@ -19,21 +19,20 @@ const register = async (name, last_name, email, icon, password) => {
       icon,
       password: hashedPassword,
     });
-
     return new ResponseModel(userCreated, "Usuário registrado com sucesso!");
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
-const login = async (email, password) => {
+const login = async (user) => {
   try {
-    const findExistUser = await Users.findOne({ where: { email } });
+    const findExistUser = await Users.findOne({ where: { email: user.email } });
 
     if (!findExistUser) {
       throw new Error("Usuário não encontrado.");
     }
-    const isMatch = await bcrypt.compare(password, findExistUser.password);
+    const isMatch = await bcrypt.compare(user.password, findExistUser.password);
     if (!isMatch) {
       throw new Error("Senha ou usuário inválidos.");
     }
@@ -70,8 +69,8 @@ const userInfo = async (token) => {
       },
       `Busca do usuário ${findExistUser.name} realizado com sucesso`
     );
-  } catch (err) {
-    throw new Error(err.message);
+  } catch (error) {
+    throw new Error(error.message);
   }
 };
 
