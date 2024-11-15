@@ -1,5 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import ProductTypeBadge from "../ProductTypeBadge";
+import EditProductButton from "../EditProductButton";
+import DeleteProductButton from "../DeleteProductButton";
 
 export interface Products {
   product_id: number;
@@ -52,6 +54,14 @@ export const columns: ColumnDef<Products>[] = [
   },
   {
     accessorKey: "actions",
-    header: "#",
+    header: "Ações",
+    cell: ({ row: { original: product } }) => {
+      return (
+        <div className="flex">
+          <EditProductButton product={product} />
+          <DeleteProductButton productId={product.product_id} />
+        </div>
+      );
+    },
   },
 ];
