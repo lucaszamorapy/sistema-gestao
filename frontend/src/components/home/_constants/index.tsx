@@ -2,17 +2,10 @@ import { ColumnDef } from "@tanstack/react-table";
 import ProductTypeBadge from "../ProductTypeBadge";
 import EditProductButton from "../EditProductButton";
 import DeleteProductButton from "../DeleteProductButton";
+import { ProductData } from "../ProductForm";
 
-export interface Products {
-  product_id: number;
-  type: string;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-}
-
-export const columns: ColumnDef<Products>[] = [
+//colunas do datatable
+export const columns: ColumnDef<ProductData>[] = [
   {
     accessorKey: "product_id",
     header: "ID",
@@ -38,6 +31,9 @@ export const columns: ColumnDef<Products>[] = [
   {
     accessorKey: "description",
     header: "Descrição",
+    cell: ({ row: { original: product } }) => (
+      <div style={{ width: "500px" }}>{product.description}</div>
+    ),
   },
   {
     accessorKey: "price",
@@ -64,4 +60,13 @@ export const columns: ColumnDef<Products>[] = [
       );
     },
   },
+];
+
+//tipos de produtos
+export const productTypes = [
+  "Tecnologia",
+  "Alimentos",
+  "Vestimentas",
+  "Beleza",
+  "Saúde",
 ];

@@ -13,10 +13,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
 import { Label } from "../ui/label";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "./_actions";
+import { toast } from "sonner";
 
 interface RegisterData {
   name: string;
@@ -29,7 +29,6 @@ const RegisterForm = () => {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [showPassword, setShowPassword] = useState(false);
-  const { toast } = useToast();
   const navigate = useNavigate();
 
   const formSchema = z.object({
@@ -78,11 +77,7 @@ const RegisterForm = () => {
       if (file) {
         fileExtension = file.name.split(".").pop()?.toLowerCase() || "";
         if (!allowedExtensions.includes(`.${fileExtension}`)) {
-          toast({
-            variant: "destructive",
-            title: "Tipo de arquivo não permitido.",
-            description: "Permitido apenas arquivos .jpg, .jpeg, ou .png",
-          });
+          toast.error("Permitido apenas arquivos .jpg, .jpeg, ou .png");
           setLoading(false);
           return;
         }
@@ -110,7 +105,7 @@ const RegisterForm = () => {
   return (
     <section className="mt-32">
       <div className="container">
-        <div className="flex flex-col items-center justify-center ">
+        <div className="flex flex-col items-center justify-center">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}

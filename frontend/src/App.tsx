@@ -1,15 +1,25 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import { AuthProvider } from "./components/contexts/AuthContext";
 import { SidebarProvider, SidebarTrigger } from "./components/ui/sidebar";
 import SidebarHeader from "./components/sidebar/SidebarHeader";
 import Home from "./pages/Home";
+import { ProductProvider } from "./components/contexts/ProductsContext";
+import { useEffect } from "react";
 
 const App = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem("authToken")) {
+      navigate("/login");
+    }
+  }, [navigate]);
+
   return (
-    <BrowserRouter>
-      <AuthProvider>
+    <AuthProvider>
+      <ProductProvider>
         <Routes>
           <Route path="/cadastro" element={<Register />} />
           <Route
@@ -24,9 +34,17 @@ const App = () => {
           />
           <Route path="/login" element={<Login />} />
         </Routes>
-      </AuthProvider>
+      </ProductProvider>
+    </AuthProvider>
+  );
+};
+
+const RootApp = () => {
+  return (
+    <BrowserRouter>
+      <App />
     </BrowserRouter>
   );
 };
 
-export default App;
+export default RootApp;

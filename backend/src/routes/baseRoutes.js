@@ -21,7 +21,7 @@ router.post(
   productsController.createProductController
 );
 router.put(
-  "/products/change/:id",
+  "/products/:id",
   uploadProducts.single("image"),
   productsController.changeProductController
 );

@@ -18,7 +18,11 @@ const createProduct = async (data) => {
     if (productExist) {
       throw new Error("Produto existente");
     }
-    const response = await Products.create(data);
+    const priceAsDecimal = parseFloat(data.price);
+    const response = await Products.create({
+      ...data,
+      price: priceAsDecimal,
+    });
     return new ResponseModel(response, "Produto cadastrado com sucesso!");
   } catch (error) {
     throw new Error(error);
@@ -31,7 +35,14 @@ const changeProduct = async (product_id, data) => {
     if (!findProduct) {
       throw new Error("Produto não encontrado");
     }
-    const response = await findProduct.update(data);
+    if (!data.image) {
+      data.image = findProduct.image;
+    }
+    const priceAsDecimal = parseFloat(data.price);
+    const response = await findProduct.update({
+      ...data,
+      price: priceAsDecimal,
+    });
     return new ResponseModel(response, "Produto alterado com sucessso!");
   } catch (error) {
     throw new Error(error.message);
