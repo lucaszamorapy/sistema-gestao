@@ -1,6 +1,6 @@
-import { getUserInfo, login } from "@/composables/user";
 import { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { getUserInfo, login } from "../login/_actions";
 
 interface UserInfoProps {
   user_id: number | null;

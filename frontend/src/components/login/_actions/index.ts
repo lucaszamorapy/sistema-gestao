@@ -8,19 +8,6 @@ interface userLogin {
   password: string;
 }
 
-export const register = async (formData: FormData) => {
-  try {
-    const response = await axios.post(`${API_URL}/user/register`, formData)
-    toast.success(response.data.message);
-    return response.data
-  } catch (error: unknown) {
-    if (error instanceof AxiosError) {
-      const errorMessage = error.response ? error.response.data.error : 'Erro desconhecido. Tente novamente mais tarde.';
-      toast.error(errorMessage);
-      console.error("Erro ao cadastrar usuário:", error);
-    }
-  }
-}
 
 export const login = async (userLogin: userLogin) => {
   try {

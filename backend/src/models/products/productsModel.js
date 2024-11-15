@@ -10,10 +10,18 @@ const Products = sequelize.define(
       autoIncrement: true,
       primaryKey: true,
     },
-    type_id: {
-      type: DataTypes.INTEGER,
+
+    type: {
+      type: DataTypes.ENUM(
+        "Tecnologia",
+        "Alimentos",
+        "Vestimentas",
+        "Beleza",
+        "Saúde"
+      ),
       allowNull: false,
     },
+
     name: {
       type: DataTypes.STRING,
       allowNull: false,

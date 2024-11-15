@@ -14,9 +14,9 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { register } from "../../composables/user";
 import { Label } from "../ui/label";
 import { Link, useNavigate } from "react-router-dom";
+import { register } from "./_actions";
 
 interface RegisterData {
   name: string;

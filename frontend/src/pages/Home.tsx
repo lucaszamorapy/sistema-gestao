@@ -1,4 +1,5 @@
 import { useAuth } from "@/components/contexts/AuthContext";
+import HomePage from "@/components/home/HomePage";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
@@ -8,7 +9,11 @@ const Home = () => {
   if (!userInfo?.user_id) {
     navigate("/login");
   }
-  return <div></div>;
+  return (
+    <div>
+      <HomePage />
+    </div>
+  );
 };
 
 export default Home;
